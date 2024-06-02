@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Twitter Trends</title>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script>
+      function runScript() {
+        fetch("http://localhost:5000/run_script")
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data.status);
+            let resultDiv = document.getElementById("results");
+            resultDiv.innerHTML = `
+                        <div class="card mt-4">
+                            <div class="card-header">
+                                <h3>Trending Topics</h3>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">These are the most happening topics as on ${
+                                  data.time
+                                }</h5>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">${
+                                      data.trends[0]
+                                    }</li>
+                                    <li class="list-group-item">${
+                                      data.trends[1]
+                                    }</li>
+                                    <li class="list-group-item">${
+                                      data.trends[2]
+                                    }</li>
+                                    <li class="list-group-item">${
+                                      data.trends[3]
+                                    }</li>
+                                    <li class="list-group-item">${
+                                      data.trends[4]
+                                    }</li>
+                                </ul>
+                                <p class="card-text mt-3">The IP address used for this query was ${
+                                  data.ip_address
+                                }.</p>
+                                <h4>JSON Record:</h4>
+                                <pre>${JSON.stringify(
+                                  data.json_record,
+                                  null,
+                                  2
+                                )}</pre>
+                            </div>
+                            <div class="card-footer text-center">
+                                <button class="btn btn-primary" onclick="runScript()">Run the query again</button>
+                            </div>
+                        </div>
+                    `;
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div id="results">
+        <div class="text-center">
+          <button class="btn btn-primary btn-lg" onclick="runScript()">
+            Click here to run the script
+          </button>
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>
